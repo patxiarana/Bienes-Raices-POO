@@ -1,0 +1,33 @@
+.propiedades {
+    margin-top: 4rem;
+    width: 100%;
+
+    border-spacing: 0;
+
+    thead {
+        background-color: $verde;
+
+        th {
+            color: $blanco;
+            padding: 2rem;
+        }
+    }
+    img {
+        width: 10rem;
+    }
+}
+
+.alerta {
+    padding: .5rem;
+    text-align: center;
+    font-weight: $bold;
+    text-transform: uppercase;
+    color: $blanco;
+    margin: 2rem 0;
+    &.error {
+        background-color: $rojo;
+    }
+    &.exito {
+        background-color: $verde;
+    }
+}
