@@ -9,9 +9,9 @@ namespace App;
 class Propiedad
 {
 
-  //Base de datos 
-protected static $db ; 
-
+    //Base de datos 
+    protected static $db;
+    protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
 
 
     public $id;
@@ -38,20 +38,44 @@ protected static $db ;
         $this->creado = date('y/m/d');
         $this->vendedores_id = $args['vendedores_id'] ?? '';
     }
+    //Definir la conexion a la DB 
+    public static function setDB($database)
+    {
+        self::$db = $database;
+    }
 
     public function guardar()
     {
-        $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, vendedorId, creado  ) VALUES ( '$this->titulo', '$this->precio', '$this->imagen',
+        //Sanitizar los datos 
+        $atributos = $this->sanitizarAtributos();
+
+        $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, vendedores_id, creado  ) VALUES ( '$this->titulo', '$this->precio', '$this->imagen',
          '$this->descripcion',  '$this->habitaciones', '$this->wc', '$this->estacionamiento', '$this->vendedores_id', '$this->creado' )";
 
-        $resultado =  self::$db->query($query) ; 
+        $resultado =  self::$db->query($query);
 
-        debuguear($resultado) ; 
+        debuguear($resultado);
     }
 
-    //Definir la conexion a la DB 
-   public static function setDB($database) {
-    self::$db = $database ; 
-   }
 
+    //Identificar y unir los atributos de la base de datos
+    public function atributos()
+    {
+        $atributos = [];
+        foreach (self::$columnasDB as $columna) {
+            if ($columna === 'id') continue;
+            $atributos[$columna] = $this->$columna;
+        }
+        return $atributos;
+    }
+    public function sanitizarAtributos()
+    {
+        $atributos = $this->atributos();
+        $sanitizado = [];
+        foreach ($atributos as $key => $value) {
+            $sanitizado[$key] = self::$db->escape_string($value);
+        }
+
+        return ($sanitizado);
+    }
 }

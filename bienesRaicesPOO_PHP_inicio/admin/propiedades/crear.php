@@ -49,7 +49,7 @@ $propiedad->guardar() ;
     $habitaciones = $_POST['habitaciones'];
     $wc = $_POST['wc'];
     $estacionamiento = $_POST['estacionamiento'];
-    $vendedores_id = $_POST['vendedorId'];
+    $vendedores_id = $_POST['vendedores_id'];
     $creado = date('Y/m/d');
 
 
