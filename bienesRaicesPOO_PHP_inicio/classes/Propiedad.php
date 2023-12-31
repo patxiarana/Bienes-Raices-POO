@@ -13,6 +13,10 @@ class Propiedad
     protected static $db;
     protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
 
+    //Manejo de errores 
+    protected static $errores = [] ; 
+
+
 
     public $id;
     public $titulo;
@@ -29,15 +33,17 @@ class Propiedad
     {
         $this->id = $args['id'] ?? '';
         $this->titulo = $args['titulo'] ?? '';
-        $this->precio = $args['precio'] ?? '';
+        $this->precio =$args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? 'imagen.jgp';
         $this->descripcion = $args['descripcion'] ?? '';
         $this->habitaciones = $args['habitaciones'] ?? '';
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('y/m/d');
-        $this->vendedores_id = $args['vendedores_id'] ?? '';
+        $this->vendedores_id =$args['vendedores_id'] ?? '';
+        //debuguear($args) ; 
     }
+    
     //Definir la conexion a la DB 
     public static function setDB($database)
     {
@@ -54,14 +60,15 @@ class Propiedad
 
         //Insertar en la base de datos 
         $query = "INSERT INTO propiedades ("; 
-        $query .= join(', ',array_keys($atributos)) ; 
-        $query .= " ) VALUES (' "; 
-        $query .= join("', '",array_values($atributos)) ; 
-        $query .=  " ')";
+        $query .= join(', ', array_keys($atributos)); 
+        $query .= ") VALUES ('"; 
+        $query .= join("', '", array_values($atributos)); 
+        $query .= "')";
            
+        debuguear($query);
         $resultado =  self::$db->query($query);
 
-        debuguear($resultado);
+   
     }
 
 
@@ -83,6 +90,45 @@ class Propiedad
             $sanitizado[$key] = self::$db->escape_string($value);
         }
 
-        return ($sanitizado);
+        return $sanitizado;
+    }
+
+    //Validacion 
+    public static function getErrores() {
+        return self::$errores;
+    }
+
+    public function validar() {
+
+        if(!$this->titulo) {
+            self::$errores[] = "Debes añadir un titulo";
+        }
+
+        if(!$this->precio) {
+            self::$errores[] = 'El Precio es Obligatorio';
+        }
+
+        if( strlen( $this->descripcion ) < 50 ) {
+            self::$errores[] = 'La descripción es obligatoria y debe tener al menos 50 caracteres';
+        }
+
+        if(!$this->habitaciones) {
+            self::$errores[] = 'El Número de habitaciones es obligatorio';
+        }
+        
+        if(!$this->wc) {
+            self::$errores[] = 'El Número de Baños es obligatorio';
+        }
+
+        if(!$this->estacionamiento) {
+            self::$errores[] = 'El Número de lugares de Estacionamiento es obligatorio';
+        }
+        return self::$errores;
+
+/*
+    if (!$this->imagen['name'] || !str_contains($this->imagen['type'],  'image')) {
+        $errores[] = 'Imagen no válida';
+    }
+*/
     }
 }

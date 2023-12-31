@@ -2,9 +2,9 @@
 
 include '../../includes/app.php';
 // Proteger esta ruta.
-use App\Propiedad ; 
+use App\Propiedad;
 
- 
+
 estaAutenticado();
 
 
@@ -21,15 +21,19 @@ $resultado = mysqli_query($db, $consulta);
 
 // Validar 
 
-$errores = [];
+//$errores = Propiedad::getErrores();
 
+
+
+//debuguear($errores); 
+/*
 $titulo = '';
 $precio = '';
 $descripcion = '';
 $habitaciones = '';
 $wc = '';
 $estacionamiento = '';
-$vendedor = null;
+$vendedor_id = null;  -*/
 
 // echo "<pre>";
 // var_dump($_POST);
@@ -37,77 +41,9 @@ $vendedor = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-$propiedad = new Propiedad($_POST);
- 
-$propiedad->guardar() ; 
-
-
-
-    $titulo = $_POST['titulo'];
-    $precio = $_POST['precio'];
-    $descripcion = $_POST['descripcion'];
-    $habitaciones = $_POST['habitaciones'];
-    $wc = $_POST['wc'];
-    $estacionamiento = $_POST['estacionamiento'];
-    $vendedores_id = $_POST['vendedores_id'];
-    $creado = date('Y/m/d');
-
-
-
-    // filter var va a filtrar una variable
-    // FILTER_VALIDATE_INT
-    // FILTER_SANITIZE_INT
-
-    // 
-
-    $numero = "HOLA1";
-
-    // Sanitizar va a hacer eso, limpiar los datos 
-    $estacionamiento = filter_var($numero, FILTER_SANITIZE_NUMBER_INT);
-
-    // Validar va a revisar que sea un tipo de dato valido.
-    $estacionamiento = filter_var($numero, FILTER_VALIDATE_INT);
-
-
-    // Existe otra opción llamada mysqli_real_escape_string, esta función va a eliminar los caracteres especiales o escaparlos para hacerlos compatibles con la base de datos.
-
-    $titulo = mysqli_real_escape_string( $db, $_POST['titulo'] );
-
-    // Todo esto de escapar datos y asegurarlos se puede evitar con Sentencias preparadas y PDO
-
-    exit;
-
-
-    $imagen = $_FILES['imagen'] ?? null;
-
-
-    if (!$titulo) {
-        $errores[] = 'Debes añadir un Titulo';
-    }
-    if (!$precio) {
-        $errores[] = 'El Precio es Obligatorio';
-    }
-    if (strlen($descripcion) < 50) {
-        $errores[] = 'La Descripción es obligatoria y debe tener al menos 50 caracteres';
-    }
-    if (!$habitaciones) {
-        $errores[] = 'La Cantidad de Habitaciones es obligatoria';
-    }
-    if (!$wc) {
-        $errores[] = 'La cantidad de WC es obligatoria';
-    }
-    if (!$estacionamiento) {
-        $errores[] = 'La cantidad de lugares de estacionamiento es obligatoria';
-    }
-    if (!$vendedores_id) {
-        $errores[] = 'Elige un vendedor';
-    }
-
-    if (!$imagen['name'] || !str_contains($imagen['type'],  'image')) {
-        $errores[] = 'Imagen no válida';
-    }
-
-
+    $propiedad = new Propiedad($_POST);
+    $errores = $propiedad->validar();
+    //debuguear($errores) ; 
     $medida = 2 * 1000 * 1000;
     // var_dump($imagen['size']);
     // var_dump($imagen);
@@ -126,6 +62,9 @@ $propiedad->guardar() ;
     // El array de errores esta vacio
     if (empty($errores)) {
         //Subir la imagen
+        $propiedad->guardar();
+
+        $imagen = $_FILES['imagen'] ?? null;
 
         $carpetaImagenes = '../../imagenes/';
         $rutaImagen = '';
@@ -134,13 +73,13 @@ $propiedad->guardar() ;
         }
 
 
-
+        /*
         if ($imagen) {
             $imagePath = $carpetaImagenes . md5(uniqid(rand(), true)) . '/' . $imagen['name'];
 
             // var_dump($imagePath);
 
-            mkdir(dirname($imagePath));
+         //   mkdir(dirname($imagePath));
 
             // var_dump($imagen);
 
@@ -150,16 +89,16 @@ $propiedad->guardar() ;
 
             // var_dump($rutaImagen);
         }
-
+  */
 
 
 
         // Insertar en la BD.
         // echo "No hay errores";
 
-       
 
-        echo $query;
+
+        /* echo $query;
 
         $resultado = mysqli_query($db, $query) or die(mysqli_error($db));
         // var_dump($resultado);
@@ -167,7 +106,7 @@ $propiedad->guardar() ;
 
         if ($resultado) {
             header('location: /admin/index.php?mensaje=1');
-        }
+        } */
     }
 
     // Insertar en la BD.
@@ -235,7 +174,7 @@ incluirTemplate('header');
             <select name="vendedores_id" id="nombre_vendedor">
                 <option selected value="">-- Seleccione --</option>
                 <?php while ($row = mysqli_fetch_assoc($resultado)) : ?>
-                    <option <?php echo $vendedor === $row['id'] ? 'selected' : '' ?> value="<?php echo $row['id']; ?>"><?php echo $row['nombre'] . " " . $row['apellido']; ?>
+                    <option <?php echo $vendedor_id === $row['id'] ? 'selected' : '' ?> value="<?php echo $row['id']; ?>"><?php echo $row['nombre'] . " " . $row['apellido']; ?>
                     <?php endwhile; ?>
             </select>
         </fieldset>
