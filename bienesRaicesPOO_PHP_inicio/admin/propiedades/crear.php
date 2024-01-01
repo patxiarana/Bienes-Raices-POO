@@ -22,90 +22,54 @@ $resultado = mysqli_query($db, $consulta);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Crea una nueva instancia
     $propiedad = new Propiedad($_POST);
-
-
-    //Crear Carpeta de imagenes 
-    $carpetaImagenes = '../../imagenes/';
-    $rutaImagen = '';
-    if (!is_dir($carpetaImagenes)) {
-        mkdir($carpetaImagenes);
-    }
+     //debuguear($propiedad) ; 
+   // Subida de archivoS
     //Nombre unico 
-    if ($imagen) {
-        $imagePath = $carpetaImagenes . md5(uniqid(rand(), true)) . '/' . $imagen['name'];
-    }
 
 
     // Setea la imagen 
     //Realiza un resize a la imagen con intervention 
-    if($_FILES['image']['tmp_name']) {
-        $image = Image::make($_FILES['imagen']['tmp_name'])->fit(8000, 6000);
-        $propiedad->setImagen($imagePath);
-    }
-
-
+   // debuguear($_FILES['imagen']['name']) ;  
+   $nombreImagen =$_FILES['imagen']['name'];
+   if($_FILES['imagen']['name']) {
+    $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+     $propiedad->setImagen($nombreImagen);
+}
+ //debuguear($propiedad) ; 
+//debuguear($_FILES['imagen']) ; 
     //validar
     $errores = $propiedad->validar();
-    //debuguear($errores) ; 
+    
     $medida = 2 * 1000 * 1000;
-    // var_dump($imagen['size']);
-    // var_dump($imagen);
 
-    if ($imagen['size'] > $medida) {
+   /* if ($imagen['size'] > $medida) {
         $errores[] = 'La Imagen es muy grande';
-    }
+    } */
 
     // El array de errores esta vacio
     if (empty($errores)) {
         //Subir la imagen
-        $propiedad->guardar();
+        //Crear la carpeta para subir imagenes 
+
+        if(!is_dir(CARPETA_IMAGENES)) {
+            mkdir(CARPETA_IMAGENES);
+        }
+
 
         $imagen = $_FILES['imagen'] ?? null;
 
         //Guarda la imagen en el servidor 
-        $image->save($carpetaImagenes .  $imagePath);
+        $image->save(CARPETA_IMAGENES . $nombreImagen);
 
+        // Guardar en la base de datos
+    $resultado = $propiedad->guardar();
 
-
-
-        /*        // var_dump($imagePath);
-
-         //   mkdir(dirname($imagePath));
-
-            // var_dump($imagen);
-
-            move_uploaded_file($imagen['tmp_name'], $imagePath);
-
-            $rutaImagen = str_replace($carpetaImagenes, '', $imagePath);
-
-            // var_dump($rutaImagen);
-        }
-  */
-
-
-
-        // Insertar en la BD.
-        // echo "No hay errores";
-
-
-
-        /* echo $query;
-
-        $resultado = mysqli_query($db, $query) or die(mysqli_error($db));
-        // var_dump($resultado);
-        // printf("Nuevo registro con el id %d.\n", mysqli_insert_id($db));
-
-        if ($resultado) {
-            header('location: /admin/index.php?mensaje=1');
-        } */
+    if($resultado) {
+        header('Location: /') ; 
     }
-
-    // Insertar en la BD.
-
-
 }
 
-
+}
 
 
 

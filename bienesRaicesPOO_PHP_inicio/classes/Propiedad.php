@@ -35,12 +35,12 @@ class Propiedad
         $this->titulo = $args['titulo'] ?? '';
         $this->precio =$args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
-        $this->descripcion = $args['descripcion'] ?? '';
         $this->habitaciones = $args['habitaciones'] ?? '';
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('y/m/d');
         $this->vendedores_id =$args['vendedores_id'] ?? '';
+        $this->descripcion = $args['descripcion'] ?? '';
         //debuguear($args) ; 
     }
     
@@ -65,10 +65,10 @@ class Propiedad
         $query .= join("', '", array_values($atributos)); 
         $query .= "')";
            
-        debuguear($query);
+       // debuguear($query);
         $resultado =  self::$db->query($query);
 
-   
+        return $resultado ; 
     }
 
 
@@ -131,6 +131,12 @@ class Propiedad
         if(!$this->estacionamiento) {
             self::$errores[] = 'El Número de lugares de Estacionamiento es obligatorio';
         }
+
+        if(!$this->imagen) {
+            self::$errores[] = 'La imagen es obligatoria' ; 
+        }
+      
+
         return self::$errores;
 
 /*
