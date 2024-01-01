@@ -3,6 +3,9 @@
 include '../../includes/app.php';
 // Proteger esta ruta.
 use App\Propiedad;
+use Intervention\Image\ImageManagerStatic as Image;
+
+
 
 
 estaAutenticado();
@@ -13,35 +16,35 @@ $db = conectarDb();
 $consulta = "SELECT * FROM vendedores";
 $resultado = mysqli_query($db, $consulta);
 
-// Leer datos del formulario... 
-
-// echo "<pre>";
-// var_dump($_POST);
-// echo "</pre>";
-
-// Validar 
-
-//$errores = Propiedad::getErrores();
 
 
-
-//debuguear($errores); 
-/*
-$titulo = '';
-$precio = '';
-$descripcion = '';
-$habitaciones = '';
-$wc = '';
-$estacionamiento = '';
-$vendedor_id = null;  -*/
-
-// echo "<pre>";
-// var_dump($_POST);
-// echo "</pre>";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    // Crea una nueva instancia
     $propiedad = new Propiedad($_POST);
+
+
+    //Crear Carpeta de imagenes 
+    $carpetaImagenes = '../../imagenes/';
+    $rutaImagen = '';
+    if (!is_dir($carpetaImagenes)) {
+        mkdir($carpetaImagenes);
+    }
+    //Nombre unico 
+    if ($imagen) {
+        $imagePath = $carpetaImagenes . md5(uniqid(rand(), true)) . '/' . $imagen['name'];
+    }
+
+
+    // Setea la imagen 
+    //Realiza un resize a la imagen con intervention 
+    if($_FILES['image']['tmp_name']) {
+        $image = Image::make($_FILES['imagen']['tmp_name'])->fit(8000, 6000);
+        $propiedad->setImagen($imagePath);
+    }
+
+
+    //validar
     $errores = $propiedad->validar();
     //debuguear($errores) ; 
     $medida = 2 * 1000 * 1000;
@@ -52,13 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = 'La Imagen es muy grande';
     }
 
-
-
-
-    // echo "<pre>";
-    // var_dump($errores);
-    // echo "</pre>";
-
     // El array de errores esta vacio
     if (empty($errores)) {
         //Subir la imagen
@@ -66,18 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $imagen = $_FILES['imagen'] ?? null;
 
-        $carpetaImagenes = '../../imagenes/';
-        $rutaImagen = '';
-        if (!is_dir($carpetaImagenes)) {
-            mkdir($carpetaImagenes);
-        }
+        //Guarda la imagen en el servidor 
+        $image->save($carpetaImagenes .  $imagePath);
 
 
-        /*
-        if ($imagen) {
-            $imagePath = $carpetaImagenes . md5(uniqid(rand(), true)) . '/' . $imagen['name'];
 
-            // var_dump($imagePath);
+
+        /*        // var_dump($imagePath);
 
          //   mkdir(dirname($imagePath));
 

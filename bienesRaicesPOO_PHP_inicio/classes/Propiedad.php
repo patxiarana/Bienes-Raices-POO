@@ -34,7 +34,7 @@ class Propiedad
         $this->id = $args['id'] ?? '';
         $this->titulo = $args['titulo'] ?? '';
         $this->precio =$args['precio'] ?? '';
-        $this->imagen = $args['imagen'] ?? 'imagen.jgp';
+        $this->imagen = $args['imagen'] ?? '';
         $this->descripcion = $args['descripcion'] ?? '';
         $this->habitaciones = $args['habitaciones'] ?? '';
         $this->wc = $args['wc'] ?? '';
@@ -91,6 +91,14 @@ class Propiedad
         }
 
         return $sanitizado;
+    }
+
+    // Subida de archivos 
+    public function setImagen($imagen) {
+     //Asignar al atributo de la imagen el nombre de la imagen 
+        if($imagen) {
+            $this->imagen = $imagen ; 
+        }
     }
 
     //Validacion 
