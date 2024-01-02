@@ -4,46 +4,36 @@ use App\Propiedad;
 
 include '../../includes/app.php';
 // Proteger esta ruta.
-estaAutenticado() ; 
+estaAutenticado();
 
 // Verificar el id
 $id =  $_GET['id'];
 $id = filter_var($id, FILTER_VALIDATE_INT);
-if(!$id) {
+if (!$id) {
     header('Location: /admin');
 }
 
 
 // Obtener la propiedad
-  $propiedad = Propiedad::find($id) ; 
+$propiedad = Propiedad::find($id);
 
- // debuguear($propiedad) ;
+// debuguear($propiedad) ;
 // obtener vendedores
 $consulta = "SELECT * FROM vendedores";
 $resultado = mysqli_query($db, $consulta);
 
-// Leer datos del formulario... 
-
-// echo "<pre>";
-// var_dump($_POST);
-// echo "</pre>";
-
-// Validar 
+//debuguear($propiedad); 
 
 $errores = [];
 
 
-
-// echo "<pre>";
-// var_dump($_POST);
-// echo "</pre>";
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // echo "<pre>";
-    // var_dump($_POST);
-    // echo "</pre>";
+    //Asignar los atributos 
+    $args = $_POST['propiedad'] ; 
+    $propiedad->sincronizar($args);
 
+    debuguear($propiedad) ; 
 
     $imagen = $_FILES['imagen'] ?? null;
 
@@ -89,12 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errores)) {
         // Si hay una imagen NUEVA, entonces borrar la anterior.
 
-  
+
 
         //Subir la imagen
         $carpetaImagenes = '../../imagenes/';
         $rutaImagen = '';
-        
+
         if (!is_dir($carpetaImagenes)) {
             mkdir($carpetaImagenes);
         }
@@ -106,10 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $carpetaEliminar = explode('/',  $propiedad['imagen']);
 
             // Borrar la imagen anterior...
-            unlink($carpetaImagenes . $propiedad['imagen'] );
+            unlink($carpetaImagenes . $propiedad['imagen']);
 
             // Borra la carpeta
-            rmdir($carpetaImagenes . $carpetaEliminar[0] );
+            rmdir($carpetaImagenes . $carpetaEliminar[0]);
 
             $imagePath = $carpetaImagenes . md5(uniqid(rand(), true)) . '/' . $imagen['name'];
 
@@ -170,8 +160,8 @@ incluirTemplate('header');
     <?php endforeach; ?>
 
     <form class="formulario" method="POST" enctype="multipart/form-data">
-       
-    <?php include '../../includes/templates/formulario_propiedades.php'; ?>
+
+        <?php include '../../includes/templates/formulario_propiedades.php'; ?>
         <input type="submit" value="Actualizar Propiedad" class="boton boton-verde">
 
     </form>

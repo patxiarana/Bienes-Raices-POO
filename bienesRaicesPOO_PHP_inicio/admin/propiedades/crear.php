@@ -23,7 +23,7 @@ $resultado = mysqli_query($db, $consulta);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Crea una nueva instancia
-    $propiedad = new Propiedad($_POST);
+    $propiedad = new Propiedad($_POST['propiedad']);
      //debuguear($propiedad) ; 
    // Subida de archivoS
     //Nombre unico 
@@ -31,10 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Setea la imagen 
     //Realiza un resize a la imagen con intervention 
-   // debuguear($_FILES['imagen']['name']) ;  
-   $nombreImagen =$_FILES['imagen']['name'];
-   if($_FILES['imagen']['name']) {
-    $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+   //debuguear($_FILES) ;  
+   $nombreImagen =$_FILES['propiedad']['name']['imagen'];
+   if($_FILES['propiedad']['name']['imagen']) {
+    $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
      $propiedad->setImagen($nombreImagen);
 }
  //debuguear($propiedad) ; 
