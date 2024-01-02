@@ -8,7 +8,10 @@
 
             <label for="imagen">Imagen: </label>
             <input name="imagen" type="file" id="imagen">
-
+         
+         <?php   if($propiedad->imagen) { ?>
+            <img loading="lazy" src="/../imagenes/<?php echo $propiedad->imagen ; ?>" alt="anuncio">
+            <?php } ?>
 
             <label for="descripcion">Descripción:</label>
             <textarea name="descripcion" id="descripcion"><?php echo s($propiedad->descripcion); ?></textarea>

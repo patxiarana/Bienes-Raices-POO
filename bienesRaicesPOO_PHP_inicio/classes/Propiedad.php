@@ -140,7 +140,7 @@ class Propiedad
         return self::$errores;
     }
 
-     //lista todas las propiedades 
+     //lista todos los registros  
 
      public static function all() {
      $query = "SELECT * FROM propiedades" ; 
@@ -151,10 +151,14 @@ class Propiedad
      return $resultado ; 
      
      }
-      //Busca una propiedad por su Id 
-      
+      //Busca una registro por su Id 
+       
+       public static function find($id) {
+        $query = "SELECT * FROM propiedades WHERE id = $id ";
 
-  
+        $resultado = self::consultarSQL($query) ; 
+        return  array_shift($resultado) ; 
+       }
 
 
 
