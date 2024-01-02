@@ -1,11 +1,8 @@
 <?php
 
-include '../../includes/funciones.php';
+include '../../includes/app.php';
 // Proteger esta ruta.
-$auth = estaAutenticado();
-if(!$auth) {
-    header('Location: /');
-}
+estaAutenticado() ; 
 
 // Verificar el id
 $id =  $_GET['id'];
@@ -14,8 +11,6 @@ if(!$id) {
     header('Location: /admin');
 }
 
-require '../../includes/config/database.php';
-$db = conectarDb();
 
 // Obtener la propiedad
 $consulta = "SELECT * FROM propiedades WHERE id = $id ";

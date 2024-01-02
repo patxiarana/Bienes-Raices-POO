@@ -20,7 +20,7 @@ incluirTemplate('header');
 ?>
 
 <h1 class="fw-300 centrar-texto"><?php echo $propiedad['titulo']; ?></h1>
-<img loading="lazy" src="/../imagenes/<?php echo $propiedad['imagen'] . '.jpg'; ?>" alt="anuncio">
+<img loading="lazy" src="/../imagenes/<?php echo $propiedad['imagen'] ; ?>" alt="anuncio">
 
 <main class="contenedor seccion contenido-centrado">
     <div class="resumen-propiedad">

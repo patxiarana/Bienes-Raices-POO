@@ -39,7 +39,7 @@ class Propiedad
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('y/m/d');
-        $this->vendedores_id =$args['vendedores_id'] ?? '';
+        $this->vendedores_id =$args['vendedores_id'] ?? 1;
         $this->descripcion = $args['descripcion'] ?? '';
         //debuguear($args) ; 
     }
@@ -138,11 +138,57 @@ class Propiedad
       
 
         return self::$errores;
+    }
 
-/*
-    if (!$this->imagen['name'] || !str_contains($this->imagen['type'],  'image')) {
-        $errores[] = 'Imagen no válida';
-    }
-*/
-    }
+     //lista todas las propiedades 
+
+     public static function all() {
+     $query = "SELECT * FROM propiedades" ; 
+     
+
+     $resultado = self::consultarSQL($query) ;
+     
+     return $resultado ; 
+     
+     }
+      //Busca una propiedad por su Id 
+      
+
+  
+
+
+
+
+     public static function consultarSQL($query) {
+           //Consultar la Base De Datos 
+            $resultado = self::$db->query($query) ; 
+
+           //Iterar los resultados 
+             $array = [] ; 
+            while($registro = $resultado->fetch_assoc()) {
+                $array[] = self::crearObjeto($registro) ; 
+            } ; 
+
+         
+           //liberar la memoria  
+            $resultado->free(); 
+
+
+           //retornar los resultados 
+            return $array ; 
+
+     }
+
+     protected static function crearObjeto($registro) {
+      $objeto = new self() ; 
+
+      foreach($registro as $key => $value) {
+        if(property_exists( $objeto, $key  ))
+        $objeto->$key = $value ; 
+       }
+
+
+       return $objeto ; 
+     }
+
 }
