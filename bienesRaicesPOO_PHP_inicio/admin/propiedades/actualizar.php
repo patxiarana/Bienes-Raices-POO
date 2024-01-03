@@ -24,7 +24,7 @@ $resultado = mysqli_query($db, $consulta);
 
 //debuguear($propiedad); 
 
-$errores = [];
+$errores = Propiedad::getErrores(); 
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -33,32 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $args = $_POST['propiedad'] ; 
     $propiedad->sincronizar($args);
 
-    debuguear($propiedad) ; 
+    $errores = $propiedad->validar(); 
+//    debuguear($propiedad) ; 
 
-    $imagen = $_FILES['imagen'] ?? null;
-
-
-    if (!$titulo) {
-        $errores[] = 'Debes añadir un Titulo';
-    }
-    if (!$precio) {
-        $errores[] = 'El Precio es Obligatorio';
-    }
-    if (strlen($descripcion) < 50) {
-        $errores[] = 'La Descripción es obligatoria y debe tener al menos 50 caracteres';
-    }
-    if (!$habitaciones) {
-        $errores[] = 'La Cantidad de Habitaciones es obligatoria';
-    }
-    if (!$wc) {
-        $errores[] = 'La cantidad de WC es obligatoria';
-    }
-    if (!$estacionamiento) {
-        $errores[] = 'La cantidad de lugares de estacionamiento es obligatoria';
-    }
-    if (!$vendedor) {
-        $errores[] = 'Elige un vendedor';
-    }
 
     $medida = 2 * 1000 * 1000;
     // var_dump($imagen['size']);
