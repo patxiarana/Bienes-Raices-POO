@@ -27,58 +27,45 @@ $resultado = mysqli_query($db, $consulta);
 
 //debuguear($propiedad); 
 
-$errores = Propiedad::getErrores(); 
+$errores = Propiedad::getErrores();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //Asignar los atributos 
-    $args = $_POST['propiedad'] ; 
+    $args = $_POST['propiedad'];
     $propiedad->sincronizar($args);
 
     //validazion 
-    $errores = $propiedad->validar(); 
-  
+    $errores = $propiedad->validar();
+
 
 
     //Subida de archivos 
 
     //Nombre Imagen 
-    $nombreImagen = md5(uniqid(rand(),true)) . "jpg";
+    $nombreImagen = md5(uniqid(rand(), true)) . "jpg";
 
-    if($_FILES['propiedad']['name']['imagen']) {
-     $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
-      $propiedad->setImagen($nombreImagen);
- }
+    if ($_FILES['propiedad']['name']['imagen']) {
+        $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800, 600);
+        $propiedad->setImagen($nombreImagen);
+    }
 
 
 
     // El array de errores esta vacio
     if (empty($errores)) {
-        // Si hay una imagen NUEVA, entonces borrar la anterior.
-
-            // var_dump($rutaImagen);
-        }
-
-        // Insertar en la BD.
-        // echo "No hay errores";
+     //Almacenar la imagen 
+     $image->save(CARPETA_IMAGENES . $nombreImagen) ; 
 
 
-        exit ; 
-        $query = "UPDATE propiedades SET titulo = '$titulo', precio = '$precio', descripcion = '$descripcion', habitaciones = '$habitaciones', wc = '$wc', estacionamiento = '$estacionamiento', vendedor_Id = '$vendedor', imagen = '$rutaImagen'  WHERE id = '$id' ";
-        // echo $query;
 
-
-        $resultado = mysqli_query($db, $query) or die(mysqli_error($db));
-        // var_dump($resultado);
-        // printf("Nuevo registro con el id %d.\n", mysqli_insert_id($db));
-
-        if ($resultado) {
-            header('location: /admin/index.php?mensaje=2');
-        }
+      $propiedad->guardar();
+    
     }
+}
 
-    // Insertar en la BD.
+// Insertar en la BD.
 
 
 
