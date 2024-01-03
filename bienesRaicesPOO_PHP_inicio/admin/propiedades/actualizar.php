@@ -1,6 +1,9 @@
 <?php
 
 use App\Propiedad;
+use Intervention\Image\ImageManagerStatic as Image;
+
+
 
 include '../../includes/app.php';
 // Proteger esta ruta.
@@ -33,62 +36,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $args = $_POST['propiedad'] ; 
     $propiedad->sincronizar($args);
 
+    //validazion 
     $errores = $propiedad->validar(); 
-//    debuguear($propiedad) ; 
+  
 
 
-    $medida = 2 * 1000 * 1000;
-    // var_dump($imagen['size']);
-    // var_dump($imagen);
+    //Subida de archivos 
 
-    if ($imagen['size'] > $medida) {
-        $errores[] = 'La Imagen es muy grande';
-    }
+    //Nombre Imagen 
+    $nombreImagen = md5(uniqid(rand(),true)) . "jpg";
+
+    if($_FILES['propiedad']['name']['imagen']) {
+     $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
+      $propiedad->setImagen($nombreImagen);
+ }
 
 
-
-
-    // echo "<pre>";
-    // var_dump($errores);
-    // echo "</pre>";
 
     // El array de errores esta vacio
     if (empty($errores)) {
         // Si hay una imagen NUEVA, entonces borrar la anterior.
-
-
-
-        //Subir la imagen
-        $carpetaImagenes = '../../imagenes/';
-        $rutaImagen = '';
-
-        if (!is_dir($carpetaImagenes)) {
-            mkdir($carpetaImagenes);
-        }
-
-
-
-        if ($imagen) {
-
-            $carpetaEliminar = explode('/',  $propiedad['imagen']);
-
-            // Borrar la imagen anterior...
-            unlink($carpetaImagenes . $propiedad['imagen']);
-
-            // Borra la carpeta
-            rmdir($carpetaImagenes . $carpetaEliminar[0]);
-
-            $imagePath = $carpetaImagenes . md5(uniqid(rand(), true)) . '/' . $imagen['name'];
-
-            // var_dump($imagePath);
-
-            mkdir(dirname($imagePath));
-
-            // var_dump($imagen);
-
-            move_uploaded_file($imagen['tmp_name'], $imagePath);
-
-            $rutaImagen = str_replace($carpetaImagenes, '', $imagePath);
 
             // var_dump($rutaImagen);
         }
@@ -96,7 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Insertar en la BD.
         // echo "No hay errores";
 
-        $query = "UPDATE propiedades SET titulo = '$titulo', precio = '$precio', descripcion = '$descripcion', habitaciones = '$habitaciones', wc = '$wc', estacionamiento = '$estacionamiento', vendedorId = '$vendedor', imagen = '$rutaImagen'  WHERE id = '$id' ";
+
+        exit ; 
+        $query = "UPDATE propiedades SET titulo = '$titulo', precio = '$precio', descripcion = '$descripcion', habitaciones = '$habitaciones', wc = '$wc', estacionamiento = '$estacionamiento', vendedor_Id = '$vendedor', imagen = '$rutaImagen'  WHERE id = '$id' ";
         // echo $query;
 
 
@@ -112,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insertar en la BD.
 
 
-}
+
 
 
 

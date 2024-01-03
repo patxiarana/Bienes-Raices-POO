@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Setea la imagen 
     //Realiza un resize a la imagen con intervention 
    //debuguear($_FILES) ;  
-   $nombreImagen =$_FILES['propiedad']['name']['imagen'];
+   $nombreImagen = md5(uniqid(rand(),true)) . "jpg";
    if($_FILES['propiedad']['name']['imagen']) {
     $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
      $propiedad->setImagen($nombreImagen);
