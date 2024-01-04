@@ -18,27 +18,21 @@ incluirTemplate('header');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    echo "<pre>";
+    /*echo "<pre>";
     var_dump($_POST);
-    echo "</pre>";
+    echo "</pre>";*/
 
     // Sanitizar número entero
     $id = $_POST['id_eliminar'];
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
     // Eliminar... 
+     if($id){
+    $propiedad = Propiedad::find($id) ;
+   // debuguear($propiedad) ; 
+    $propiedad->eliminar() ; 
 
-    $query = "DELETE FROM propiedades WHERE id = '$id'";
-
-    // echo $query;
-
-    $resultado = mysqli_query($db, $query) or die(mysqli_error($db));
-    // var_dump($resultado);
-    // printf("Nuevo registro con el id %d.\n", mysqli_insert_id($db));
-
-    if ($resultado) {
-        header('location: /admin');
-    }
+     }
 
 }
 ?>
