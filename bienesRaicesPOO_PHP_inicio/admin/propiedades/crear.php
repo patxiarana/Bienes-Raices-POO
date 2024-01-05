@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      //debuguear($propiedad) ; 
    // Subida de archivoS
     //Nombre unico 
-
+    // debuguear($propiedad) ;
 
     // Setea la imagen 
     //Realiza un resize a la imagen con intervention 
@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
      $propiedad->setImagen($nombreImagen);
 }
- //debuguear($propiedad) ; 
 //debuguear($_FILES['imagen']) ; 
     //validar
     $errores = $propiedad->validar();
@@ -64,11 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image->save(CARPETA_IMAGENES . $nombreImagen);
 
         // Guardar en la base de datos
-    $resultado = $propiedad->guardar();
-
-    if($resultado) {
-        header('Location: /') ; 
-    }
+         $propiedad->guardar() ; 
 }
 
 }

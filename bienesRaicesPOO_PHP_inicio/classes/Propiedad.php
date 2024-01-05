@@ -31,7 +31,7 @@ class Propiedad
 
     public function __construct($args = [])
     {
-        $this->id = $args['id'] ?? '';
+        $this->id = $args['id'] ?? NULL;
         $this->titulo = $args['titulo'] ?? '';
         $this->precio = $args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
@@ -50,17 +50,15 @@ class Propiedad
         self::$db = $database;
     }
 
-    public function guardar()
-    {
-        if (isset($this->id)) {
-            // Actualizando
+    public function guardar() {
+        if(!is_null($this->id)) {
+            // actualizar
             $this->actualizar();
         } else {
-            //Creando un nuevo registro 
+            // Creando un nuevo registro
             $this->crear();
         }
     }
-
 
 
     public function crear()
@@ -78,10 +76,13 @@ class Propiedad
         $query .= join("', '", array_values($atributos));
         $query .= "')";
 
-        // debuguear($query);
         $resultado =  self::$db->query($query);
 
-        return $resultado;
+        // Mensaje de exito
+        if($resultado) {
+            // Redireccionar al usuario.
+            header('Location: /admin?resultado=1');
+        }
     }
 
     public function actualizar()
@@ -137,20 +138,15 @@ class Propiedad
         return $sanitizado;
     }
 
-
-    // Subida de archivos 
-    public function setImagen($imagen)
-    {
-        //Elimina la imagen previa 
-
-        if (isset($this->id)) {
-            //Comprobar si existe el archivo
-            $this->borrarimagen() ; 
+    // Subida de archivos
+    public function setImagen($imagen) {
+        // Elimina la imagen previa
+        if( !is_null($this->id) ) {
+            $this->borrarImagen();
         }
- 
-        //Asignar al atributo de la imagen el nombre de la imagen 
-       if ($imagen) {
-            $this->imagen = $imagen;  
+        // Asignar al atributo de imagen el nombre de la imagen
+        if($imagen) {
+            $this->imagen = $imagen;
         }
     }
 

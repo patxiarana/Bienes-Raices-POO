@@ -53,17 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-    // El array de errores esta vacio
-    if (empty($errores)) {
-     //Almacenar la imagen 
-     $image->save(CARPETA_IMAGENES . $nombreImagen) ; 
+    if(empty($errores)) {
+        // Almacenar la imagen
+        if($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image->save(CARPETA_IMAGENES . $nombreImagen);
+        }
 
-
-
-      $propiedad->guardar();
+        $propiedad->guardar();
+    }
     
     }
-}
+
 
 // Insertar en la BD.
 
