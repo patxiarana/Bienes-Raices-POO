@@ -8,7 +8,7 @@ class ActiveRecord {
      //Base de datos 
      protected static $db;
      protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
- 
+     protected static $tabla  = '';
      //Manejo de errores 
      protected static $errores = [];
  
@@ -66,7 +66,7 @@ class ActiveRecord {
  
  
          //Insertar en la base de datos 
-         $query = "INSERT INTO propiedades (";
+         $query = "INSERT INTO " . static::$tabla   ." (";
          $query .= join(', ', array_keys($atributos));
          $query .= ") VALUES ('";
          $query .= join("', '", array_values($atributos));
@@ -90,7 +90,7 @@ class ActiveRecord {
          foreach ($atributos as $key => $value) {
              $valores[]  = "{$key}='{$value}'";
          }
-         $query = "UPDATE  propiedades  SET ";
+         $query = "UPDATE " . static::$tabla ."SET ";
          $query .=  join(', ', $valores);
          $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
          $query .= " LIMIT 1 ";
@@ -102,8 +102,9 @@ class ActiveRecord {
              header('Location: /admin?resultado=2');
          }
      }
+     //Eliminar el registro 
        public function eliminar() {
-         $query = "DELETE FROM   propiedades  WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
+         $query = "DELETE FROM ". static::$tabla ." WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
          $resultado = self::$db->query($query); 
          if($resultado) {
              $this->borrarimagen(); 
@@ -200,7 +201,7 @@ class ActiveRecord {
  
      public static function all()
      {
-         $query = "SELECT * FROM propiedades";
+         $query = "SELECT * FROM " . static::$tabla;
  
  
          $resultado = self::consultarSQL($query);
@@ -211,7 +212,7 @@ class ActiveRecord {
  
      public static function find($id)
      {
-         $query = "SELECT * FROM propiedades WHERE id = $id ";
+         $query = "SELECT * FROM " . static::$tabla .   " WHERE id = $id ";
  
          $resultado = self::consultarSQL($query);
          return  array_shift($resultado);

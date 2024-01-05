@@ -4,9 +4,10 @@ include '../includes/app.php';
  estaAutenticado();
 
  use App\Propiedad ; 
- 
+ use App\Vendedor ; 
 //Implementar un metodo para obtener todas las propiedades con Active Record
-$propiedades = Propiedad::all();
+ $propiedades = Propiedad::all();
+ $vendedores = Vendedor::all() ; 
 //debuguear($propiedades) ; 
 // Validar la URL 
 $mensaje = $_GET['mensaje'] ?? null;
