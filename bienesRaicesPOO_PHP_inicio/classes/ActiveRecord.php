@@ -4,16 +4,16 @@
 namespace App ;
 
 
-class ActiveRecord {
+class ActiveRecord  {
      //Base de datos 
      protected static $db;
-     protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
+  //   protected static $columnasDB = [];
      protected static $tabla  = '';
-     //Manejo de errores 
-     protected static $errores = [];
- 
- 
- 
+
+
+     protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
+
+
      public $id;
      public $titulo;
      public $precio;
@@ -24,21 +24,21 @@ class ActiveRecord {
      public $estacionamiento;
      public $creado;
      public $vendedores_id;
+
+
+
+
+
+
+
+
+
+
+     //Manejo de errores 
+     protected static $errores = [];
  
-     public function __construct($args = [])
-     {
-         $this->id = $args['id'] ?? NULL;
-         $this->titulo = $args['titulo'] ?? '';
-         $this->precio = $args['precio'] ?? '';
-         $this->imagen = $args['imagen'] ?? '';
-         $this->habitaciones = $args['habitaciones'] ?? '';
-         $this->wc = $args['wc'] ?? '';
-         $this->estacionamiento = $args['estacionamiento'] ?? '';
-         $this->creado = date('y/m/d');
-         $this->vendedores_id = $args['vendedores_id'] ?? 1;
-         $this->descripcion = $args['descripcion'] ?? '';
-         //debuguear($args) ; 
-     }
+ 
+
  
      //Definir la conexion a la DB 
      public static function setDB($database)
@@ -162,41 +162,6 @@ class ActiveRecord {
          return self::$errores;
      }
  
-     public function validar()
-     {
- 
-         if (!$this->titulo) {
-             self::$errores[] = "Debes añadir un titulo";
-         }
- 
-         if (!$this->precio) {
-             self::$errores[] = 'El Precio es Obligatorio';
-         }
- 
-         if (strlen($this->descripcion) < 50) {
-             self::$errores[] = 'La descripción es obligatoria y debe tener al menos 50 caracteres';
-         }
- 
-         if (!$this->habitaciones) {
-             self::$errores[] = 'El Número de habitaciones es obligatorio';
-         }
- 
-         if (!$this->wc) {
-             self::$errores[] = 'El Número de Baños es obligatorio';
-         }
- 
-         if (!$this->estacionamiento) {
-             self::$errores[] = 'El Número de lugares de Estacionamiento es obligatorio';
-         }
- 
-         if (!$this->imagen) {
-             self::$errores[] = 'La imagen es obligatoria';
-         }
- 
- 
-         return self::$errores;
-     }
- 
      //lista todos los registros  
  
      public static function all()
@@ -243,7 +208,7 @@ class ActiveRecord {
  
      protected static function crearObjeto($registro)
      {
-         $objeto = new self();
+         $objeto = new static();
  
          foreach ($registro as $key => $value) {
              if (property_exists($objeto, $key))

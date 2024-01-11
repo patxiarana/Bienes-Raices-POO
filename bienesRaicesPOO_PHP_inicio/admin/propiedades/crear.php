@@ -3,20 +3,14 @@
 include '../../includes/app.php';
 // Proteger esta ruta.
 use App\Propiedad;
+use App\Vendedor; 
 use Intervention\Image\ImageManagerStatic as Image;
-
-
-
 
 estaAutenticado();
 
-
-$db = conectarDb();
-
 $propiedad = new Propiedad() ; 
-
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
+//Cosulta para obtener todos los vendedores 
+$vendedores = Vendedor::all() ; 
 
 
 

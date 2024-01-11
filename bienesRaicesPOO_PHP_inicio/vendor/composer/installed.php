@@ -3,7 +3,7 @@
         'name' => 'usuario/bienes-raices-poo_php_inicio',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '7da3c9b2ac2778fc88ee2227ad1be15044848c4f',
+        'reference' => 'dbe325851c8903d9accea7509599ddcab7bde8e1',
         'type' => 'proyect',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -100,7 +100,7 @@
         'usuario/bienes-raices-poo_php_inicio' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '7da3c9b2ac2778fc88ee2227ad1be15044848c4f',
+            'reference' => 'dbe325851c8903d9accea7509599ddcab7bde8e1',
             'type' => 'proyect',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
