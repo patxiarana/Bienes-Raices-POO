@@ -1,6 +1,7 @@
 <?php
 
 use App\Propiedad;
+use APP\Vendedor ; 
 use Intervention\Image\ImageManagerStatic as Image;
 
 
@@ -21,10 +22,7 @@ if (!$id) {
 $propiedad = Propiedad::find($id);
 
 // debuguear($propiedad) ;
-// obtener vendedores
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
-
+$vendedores = Vendedor::all() ; 
 //debuguear($propiedad); 
 
 $errores = Propiedad::getErrores();
