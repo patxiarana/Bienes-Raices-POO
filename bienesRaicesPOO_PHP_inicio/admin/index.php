@@ -1,13 +1,13 @@
 <?php
 include '../includes/app.php';
 // Proteger esta ruta.
- estaAutenticado();
+estaAutenticado();
 
- use App\Propiedad ; 
-use App\Vendedor; 
+use App\Propiedad;
+use App\Vendedor;
 //Implementar un metodo para obtener todas las propiedades con Active Record
- $propiedades = Propiedad::all();
- $vendedores = Vendedor::all() ; 
+$propiedades = Propiedad::all();
+$vendedores = Vendedor::all();
 //debuguear($propiedades) ; 
 // Validar la URL 
 $mensaje = $_GET['mensaje'] ?? null;
@@ -28,13 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
     // Eliminar... 
-     if($id){
-    $propiedad = Propiedad::find($id) ;
-   // debuguear($propiedad) ; 
-    $propiedad->eliminar() ; 
-
-     }
-
+    if ($id) {
+        $propiedad = Propiedad::find($id);
+        // debuguear($propiedad) ; 
+        $propiedad->eliminar();
+    }
 }
 ?>
 
@@ -44,14 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     <?php
-        if ($mensaje == 1) {
-            echo '<p class="alerta exito">Anuncio Creado Correctamente</p>';
-        } else if ($mensaje == 2) {
+    if ($mensaje == 1) {
+        echo '<p class="alerta exito">Anuncio Creado Correctamente</p>';
+    } else if ($mensaje == 2) {
         echo '<p class="alerta exito">Anuncio Actualizado Correctamente</p>';
-        }
+    }
     ?>
 
     <a href="/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
+
+    <h2>Propiedades</h2>
 
 
     <table class="propiedades">
@@ -66,29 +66,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </thead>
 
         <tbody>
-            <?php foreach($propiedades as $propiedad) : ?>
+            <?php foreach ($propiedades as $propiedad) : ?>
+                <tr>
+                    <td><?php echo $propiedad->id; ?></td>
+                    <td><?php echo $propiedad->titulo; ?></td>
+                    <td>
+                        <img loading="lazy" src="/../imagenes/<?php echo $propiedad->imagen; ?>" alt="anuncio">
+                    </td>
+                    <td>$ <?php echo $propiedad->precio; ?></td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="id_eliminar" value="<?php echo $propiedad->id; ?>">
+                            <input type="submit" href="/admin/propiedades/borrar.php" class="boton boton-rojo" value="Borrar">
+                        </form>
+
+                        <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>" class="boton boton-verde">Actualizar</a>
+                    </td>
+                </tr>
+
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <h2>Vendedores</h2>
+
+
+    <table class="propiedades">
+        <thead>
             <tr>
-                <td><?php echo $propiedad->id; ?></td>
-                <td><?php echo $propiedad->titulo; ?></td>
-                <td>
-                <img loading="lazy" src="/../imagenes/<?php echo $propiedad->imagen ; ?>" alt="anuncio">
-                </td>
-                <td>$ <?php echo $propiedad->precio; ?></td>
-                <td>
-                <form method="POST">
-                    <input type="hidden" name="id_eliminar" value="<?php echo $propiedad->id; ?>">
-                    <input type="submit" href="/admin/propiedades/borrar.php" class="boton boton-rojo" value="Borrar">
-                </form>
-                    
-                    <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>" class="boton boton-verde">Actualizar</a>
-                </td>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Acciones</th>
             </tr>
+        </thead>
+
+        <tbody>
+            <?php foreach ($vendedores as $vendedor) : ?>
+                <tr>
+                    <td><?php echo $vendedor->id; ?></td>
+                    <td><?php echo $vendedor->nombre . " " . $vendedor->apellido ?></td>
+                    <td>
+                    </td>
+                    <td><?php echo $vendedor->telefono; ?></td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="id_eliminar" value="<?php echo $propiedad->id; ?>">
+                            <input type="submit" href="/admin/propiedades/borrar.php" class="boton boton-rojo" value="Borrar">
+                        </form>
+
+                        <a href="/admin/vendedores/actualizar.php?id=<?php echo $propiedad->id; ?>" class="boton boton-verde">Actualizar</a>
+                    </td>
+                </tr>
 
             <?php endforeach; ?>
         </tbody>
     </table>
 </main>
 
-<?php 
-    incluirTemplate('footer');
+<?php
+incluirTemplate('footer');
 ?>

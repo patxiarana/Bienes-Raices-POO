@@ -7,30 +7,8 @@ namespace App ;
 class ActiveRecord  {
      //Base de datos 
      protected static $db;
-  //   protected static $columnasDB = [];
+     protected static $columnasDB = [];
      protected static $tabla  = '';
-
-
-     protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
-
-
-     public $id;
-     public $titulo;
-     public $precio;
-     public $imagen;
-     public $descripcion;
-     public $habitaciones;
-     public $wc;
-     public $estacionamiento;
-     public $creado;
-     public $vendedores_id;
-
-
-
-
-
-
-
 
 
 
