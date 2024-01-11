@@ -36,7 +36,7 @@ class ActiveRecord  {
 
      //Manejo de errores 
      protected static $errores = [];
- 
+
  
 
  
@@ -111,8 +111,7 @@ class ActiveRecord  {
              header('location: /admin?resultado=3');
          }
        }
- 
- 
+         
  
      //Identificar y unir los atributos de la base de datos
      public function atributos()
@@ -156,12 +155,14 @@ class ActiveRecord  {
              }
           }
  
-     //Validacion 
-     public static function getErrores()
-     {
-         return self::$errores;
-     }
- 
+      // Validación
+      public static function getErrores() {
+        return static::$errores;
+    }
+    public function validar() {
+        static::$errores = [];
+        return static::$errores;
+    }
      //lista todos los registros  
  
      public static function all()
