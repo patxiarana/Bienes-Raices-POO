@@ -29,10 +29,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Eliminar... 
     if ($id) {
-        $propiedad = Propiedad::find($id);
-        // debuguear($propiedad) ; 
-        $propiedad->eliminar();
-    }
+ 
+
+       $tipo = $_POST['tipo'] ; 
+
+       // debuguear($tipo) ; 
+    
+       if(validarTipodeContenido($tipo)) {
+     
+          //Compara lo que vamos a eliminar 
+          if($tipo == 'vendedor') {
+            $vendedor = Vendedor::find($id);
+           //  debuguear($vendedor) ; 
+            $vendedor->eliminar();
+
+          } else if($tipo == "propiedad") {
+            $propiedad = Propiedad::find($id);
+            // debuguear($propiedad) ; 
+            $propiedad->eliminar();
+        }
+          }
+
+       } 
+          
+    
 }
 ?>
 
@@ -77,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <td>
                         <form method="POST">
                             <input type="hidden" name="id_eliminar" value="<?php echo $propiedad->id; ?>">
+                            <input type="hidden" name="tipo" value="propiedad">
                             <input type="submit" href="/admin/propiedades/borrar.php" class="boton boton-rojo" value="Borrar">
                         </form>
 
@@ -110,11 +131,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <td><?php echo $vendedor->telefono; ?></td>
                     <td>
                         <form method="POST">
-                            <input type="hidden" name="id_eliminar" value="<?php echo $propiedad->id; ?>">
-                            <input type="submit" href="/admin/propiedades/borrar.php" class="boton boton-rojo" value="Borrar">
+                            <input type="hidden" name="id_eliminar" value="<?php echo $vendedor->id; ?>">
+                            <input type="hidden" name="tipo" value="vendedor">
+                            <input type="submit" href="/admin/vendedores/borrar.php" class="boton boton-rojo" value="Borrar">
                         </form>
 
-                        <a href="/admin/vendedores/actualizar.php?id=<?php echo $propiedad->id; ?>" class="boton boton-verde">Actualizar</a>
+                        <a href="/admin/vendedores/actualizar.php?id=<?php echo $venededor->id; ?>" class="boton boton-verde">Actualizar</a>
                     </td>
                 </tr>
 

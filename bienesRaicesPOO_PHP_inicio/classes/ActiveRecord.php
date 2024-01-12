@@ -81,15 +81,17 @@ class ActiveRecord  {
          }
      }
      //Eliminar el registro 
-       public function eliminar() {
-         $query = "DELETE FROM ". static::$tabla ." WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
-         $resultado = self::$db->query($query); 
-         if($resultado) {
-             $this->borrarimagen(); 
-             header('location: /admin?resultado=3');
-         }
-       }
-         
+    public function eliminar() {
+        // Eliminar el registro
+        $query = "DELETE FROM "  . static::$tabla . " WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
+        $resultado = self::$db->query($query);
+        //   debuguear($resultado) ; 
+        if($resultado) {
+            $this->borrarImagen();
+            header('location: /admin?resultado=3');
+        }
+    }
+
  
      //Identificar y unir los atributos de la base de datos
      public function atributos()

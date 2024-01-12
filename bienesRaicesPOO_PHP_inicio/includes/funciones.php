@@ -39,4 +39,9 @@ $s = htmlspecialchars($html) ;
 return $s ; 
 }
 
+//Validar tipo de contenido 
+function validarTipodeContenido($tipo) {
+    $tipos = ['vendedor', 'propiedad'] ; 
 
+return in_array($tipo,  $tipos) ; 
+}

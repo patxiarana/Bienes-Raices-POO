@@ -2,7 +2,7 @@
 function conectarDb(): mysqli
 
 { 
-    $db = new  mysqli('localhost', 'root', '', 'bienesraices_crud');  // La contraseña va como tercer parámetro
+    $db = new  mysqli('localhost', 'root', 'reydecopas', 'bienesraices_crud');  // La contraseña va como tercer parámetro
 
     if (!$db) {
         echo "Error: No se pudo conectar a MySQL.";
