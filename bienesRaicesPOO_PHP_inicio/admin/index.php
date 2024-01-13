@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="submit" href="/admin/vendedores/borrar.php" class="boton boton-rojo" value="Borrar">
                         </form>
 
-                        <a href="/admin/vendedores/actualizar.php?id=<?php echo $venededor->id; ?>" class="boton boton-verde">Actualizar</a>
+                        <a href="admin/vendedores/actualizar.php?id=<?php echo $vendedor->id; ?>" class="boton boton-verde">Actualizar</a>
                     </td>
                 </tr>
 
