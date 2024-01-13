@@ -59,27 +59,29 @@ class ActiveRecord  {
          }
      }
  
-     public function actualizar()
-     {
-         //Sanitizar los datos 
-         $atributos = $this->sanitizarAtributos();
- 
-         $valores = [];
-         foreach ($atributos as $key => $value) {
-             $valores[]  = "{$key}='{$value}'";
-         }
-         $query = "UPDATE " . static::$tabla ."SET ";
-         $query .=  join(', ', $valores);
-         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
-         $query .= " LIMIT 1 ";
- 
-         $resultado = self::$db->query($query);
- 
-         if ($resultado) {
-             // Redireccionar al usuario.
-             header('Location: /admin?resultado=2');
-         }
-     }
+
+     public function actualizar() {
+
+        // Sanitizar los datos
+        $atributos = $this->sanitizarAtributos();
+
+        $valores = [];
+        foreach($atributos as $key => $value) {
+            $valores[] = "{$key}='{$value}'";
+        }
+
+        $query = "UPDATE " . static::$tabla ." SET ";
+        $query .=  join(', ', $valores );
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+        $query .= " LIMIT 1 "; 
+
+        $resultado = self::$db->query($query);
+
+        if($resultado) {
+            // Redireccionar al usuario.
+            header('Location: /admin?resultado=2');
+        }
+    }
      //Eliminar el registro 
     public function eliminar() {
         // Eliminar el registro
