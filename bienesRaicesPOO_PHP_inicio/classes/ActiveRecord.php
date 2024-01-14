@@ -35,29 +35,28 @@ class ActiveRecord  {
      }
  
  
-     public function crear()
-     {
-         //Sanitizar los datos 
-         $atributos = $this->sanitizarAtributos();
- 
- 
- 
- 
-         //Insertar en la base de datos 
-         $query = "INSERT INTO " . static::$tabla   ." (";
-         $query .= join(', ', array_keys($atributos));
-         $query .= ") VALUES ('";
-         $query .= join("', '", array_values($atributos));
-         $query .= "')";
- 
-         $resultado =  self::$db->query($query);
- 
-         // Mensaje de exito
-         if($resultado) {
-             // Redireccionar al usuario.
-             header('Location: /admin?resultado=1');
-         }
-     }
+        // crea un nuevo registro
+        public function crear() {
+            // Sanitizar los datos
+            $atributos = $this->sanitizarAtributos();
+    
+            // Insertar en la base de datos
+            $query = " INSERT INTO " . static::$tabla . " ( ";
+            $query .= join(', ', array_keys($atributos));
+            $query .= " ) VALUES (' "; 
+            $query .= join("', '", array_values($atributos));
+            $query .= " ') ";
+    
+            echo $query;
+            // Resultado de la consulta
+            $resultado = self::$db->query($query);
+    
+            // Mensaje de exito
+            if($resultado) {
+                // Redireccionar al usuario.
+                header('Location: /admin?resultado=1');
+            }
+        }
  
 
      public function actualizar() {
@@ -156,6 +155,21 @@ class ActiveRecord  {
  
          return $resultado;
      }
+    //Obtiene una cantidad determinada de registros 
+    public static function get($cantidad)
+    {
+        $query = "SELECT * FROM " . static::$tabla . "LIMIT" . $cantidad;
+
+         // debuguear($query) ; 
+        $resultado = self::consultarSQL($query);
+
+        return $resultado;
+    }
+
+
+
+
+
      //Busca una registro por su Id 
  
      public static function find($id)
@@ -166,7 +180,7 @@ class ActiveRecord  {
          return  array_shift($resultado);
      }
  
- 
+   
  
  
      public static function consultarSQL($query)
