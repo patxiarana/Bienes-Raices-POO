@@ -1,6 +1,6 @@
 <?php
 
-
+use Intervention\Image\Gd\Commands\BrightnessCommand;
 
 define('FUNCIONES_URL', __DIR__ . "/funciones/funciones.php");
 define('TEMPLATES_URL', __DIR__ . "/templates");
@@ -44,4 +44,31 @@ function validarTipodeContenido($tipo) {
     $tipos = ['vendedor', 'propiedad'] ; 
 
 return in_array($tipo,  $tipos) ; 
+}
+
+
+//Muestra los mensajes 
+
+function mostrarNotificacion($codigo) {
+    $mensaje = '' ; 
+
+
+    switch($codigo) {
+        case 1 :
+            $mensaje = "Creado correctamente" ; 
+            break ;
+            case 2:
+                $mensaje = "Actualizado correctamente" ; 
+                break ;
+                case 2 :
+                    $mensaje = "Eliminado correctamente" ; 
+                    break ;
+
+                    default :
+                    $mensaje = false ; 
+                    break ; 
+    }
+
+    return $mensaje ; 
+
 }

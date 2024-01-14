@@ -10,7 +10,7 @@ $propiedades = Propiedad::all();
 $vendedores = Vendedor::all();
 //debuguear($propiedades) ; 
 // Validar la URL 
-$mensaje = $_GET['mensaje'] ?? null;
+$resultado = $_GET['resultado'] ?? null;
 
 
 // Importar el Template
@@ -59,15 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <h1 class="fw-300 centrar-texto">Administración</h1>
 
 <main class="contenedor seccion contenido-centrado">
+<?php 
+            $mensaje = mostrarNotificacion( intval( $resultado) );
+            if($mensaje) { ?>
+                <p class="alerta exito"><?php echo s($mensaje); ?></p>
+            <?php } 
+        ?>
 
-
-    <?php
-    if ($mensaje == 1) {
-        echo '<p class="alerta exito">Anuncio Creado Correctamente</p>';
-    } else if ($mensaje == 2) {
-        echo '<p class="alerta exito">Anuncio Actualizado Correctamente</p>';
-    }
-    ?>
 
     <a href="/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
     <a href="/admin/vendedores/crear.php" class="boton boton-amarillo">Nuevo Vendedor</a>

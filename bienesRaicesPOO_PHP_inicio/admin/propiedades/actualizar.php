@@ -1,7 +1,7 @@
 <?php
 
 use App\Propiedad;
-use APP\Vendedor ; 
+use App\Vendedor;
 use Intervention\Image\ImageManagerStatic as Image;
 
 
@@ -20,9 +20,8 @@ if (!$id) {
 
 // Obtener la propiedad
 $propiedad = Propiedad::find($id);
-
-// debuguear($propiedad) ;
 $vendedores = Vendedor::all() ; 
+// debuguear($propiedad) ;
 //debuguear($propiedad); 
 
 $errores = Propiedad::getErrores();
